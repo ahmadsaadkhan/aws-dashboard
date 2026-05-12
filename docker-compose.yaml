@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+
+  laravel:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: laravel_api
+    ports:
+      - "8000:80"
+    environment:
+      APP_KEY: ${APP_KEY}
+      DB_HOST: mysql
+      DB_DATABASE: aws_dashboard
+      DB_USERNAME: laravel_user
+      DB_PASSWORD: secret123
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  nextjs:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nextjs_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on:
+      - laravel
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: aws_dashboard
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: secret123
+      MYSQL_ROOT_PASSWORD: ""
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

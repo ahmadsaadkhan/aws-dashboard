@@ -1,0 +1,9 @@
+node_modules
+.next
+vendor
+.env
+.env.local
+mysql_data
+.DS_Store
+.history
+*.log
