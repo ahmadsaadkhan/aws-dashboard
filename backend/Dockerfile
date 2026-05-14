@@ -2,10 +2,9 @@ FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www
 
-RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip opcache \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache \
+    git curl zip unzip libpng-dev oniguruma-dev libxml2-dev libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip opcache
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
