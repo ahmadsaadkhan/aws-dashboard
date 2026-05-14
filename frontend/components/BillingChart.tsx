@@ -30,7 +30,8 @@ export default function BillingChart({ services }: Props) {
             <YAxis tick={{ fontSize: 10, fill: textColor }} tickLine={false} axisLine={false} tickFormatter={(v: number) => `$${v}`} />
             <Tooltip
               contentStyle={{ background: dark ? "#18181f" : "#fff", border: `1px solid ${dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"}`, borderRadius: 8, fontSize: 12 }}
-              formatter={(v: number) => [`$${v.toFixed(2)}`, "Cost"]}
+              // formatter={(v: number) => [`$${v.toFixed(2)}`, "Cost"]}
+              formatter={(v) => [`$${typeof v === 'number' ? v.toFixed(2) : '0.00'}`, "Cost"]}
             />
             <Bar dataKey="amount" radius={[4, 4, 0, 0] as [number, number, number, number]} fill="#3b82f6" />
           </BarChart>
