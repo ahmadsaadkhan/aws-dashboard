@@ -29,7 +29,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-          NEXT_PUBLIC_API_URL: http://laravel/api
+          NEXT_PUBLIC_API_URL: http://13.60.254.207:8000/api
     depends_on:
       - laravel
     networks:
